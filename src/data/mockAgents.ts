@@ -1,0 +1,40 @@
+import { Agent } from '../types';
+
+export const MOCK_AGENTS: Agent[] = [
+  {
+    id: 'agent-1',
+    name: 'Carolina Solís Vargas',
+    role: 'Directora de Propiedades Exclusivas & Escazú',
+    phone: '+506 8821-4455',
+    whatsapp: '+506 8821-4455',
+    email: 'carolina.solis@housfy.cr',
+    photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+    bio: 'Más de 12 años asesorando a familias e inversores en la compra y venta de residencias de alto nivel en el Valle Central y condominios campestres.',
+    languages: ['Español', 'Inglés'],
+    salesCount: 142,
+  },
+  {
+    id: 'agent-2',
+    name: 'Alejandro Morales Brenes',
+    role: 'Especialista en Inversiones & Torres Verticales',
+    phone: '+506 8710-9922',
+    whatsapp: '+506 8710-9922',
+    email: 'alejandro.morales@housfy.cr',
+    photoUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
+    bio: 'Experto en valoración inmobiliaria basada en datos, rentabilidad de alquileres en San José urbano y estructuración hipotecaria bancaria.',
+    languages: ['Español', 'Inglés', 'Portugués'],
+    salesCount: 98,
+  },
+  {
+    id: 'agent-3',
+    name: 'Valeria Castro Alvarado',
+    role: 'Asesora Costera & Propiedades de Playa (Pacífico)',
+    phone: '+506 8933-7711',
+    whatsapp: '+506 8933-7711',
+    email: 'valeria.castro@housfy.cr',
+    photoUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80',
+    bio: 'Enfocada en el mercado turístico y residencial de Guanacaste y Manuel Antonio. Asistencia integral en due diligence y trámites municipales.',
+    languages: ['Español', 'Inglés', 'Francés'],
+    salesCount: 76,
+  },
+];

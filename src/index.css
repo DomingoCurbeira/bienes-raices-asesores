@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'DM Serif Text', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-hover: var(--brand-accent-hover);
+  --color-brand-accent-light: var(--brand-accent-light);
+  --color-brand-accent-bg: var(--brand-accent-bg);
+  --color-brand-badge-bg: var(--brand-badge-bg);
+}
+
+:root {
+  --brand-primary: #061a14;
+  --brand-accent: #059669;
+  --brand-accent-hover: #047857;
+  --brand-accent-light: #34d399;
+  --brand-accent-bg: rgba(5, 150, 105, 0.12);
+  --brand-badge-bg: #d1fae5;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+/* Utilities for dynamic branding */
+.text-brand {
+  color: var(--brand-accent);
+}
+
+.text-brand-hover:hover {
+  color: var(--brand-accent-hover);
+}
+
+.bg-brand {
+  background-color: var(--brand-accent);
+}
+
+.bg-brand-hover:hover {
+  background-color: var(--brand-accent-hover);
+}
+
+.bg-brand-light {
+  background-color: var(--brand-accent-bg);
+}
+
+.border-brand {
+  border-color: var(--brand-accent);
+}
+
+.border-brand-hover:hover {
+  border-color: var(--brand-accent-hover);
+}
+
+.badge-brand {
+  background-color: var(--brand-badge-bg);
+  color: var(--brand-accent-hover);
+}
+
+/* Custom scrollbars & smooth interactions */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
