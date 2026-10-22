@@ -105,6 +105,10 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
               src={property.images[selectedPhotoIndex] || property.images[0]}
               alt={property.title}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src =
+                  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
+              }}
             />
             {property.images.length > 1 && (
               <>

@@ -89,6 +89,10 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src =
+              'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
+          }}
         />
 
         {/* Gradiente protector para textos */}

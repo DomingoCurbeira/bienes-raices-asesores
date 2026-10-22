@@ -293,7 +293,7 @@ export const MOCK_PROPERTIES: Property[] = [
     energyRating: 'A',
     yearBuilt: 2024,
     images: [
-      'https://images.unsplash.com/photo-1502005229762-ee1b2b80a56e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1560448205-4d9b3e6bb6db?auto=format&fit=crop&w=1200&q=80',
     ],
