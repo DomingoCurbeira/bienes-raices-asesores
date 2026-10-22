@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { SITE_CONFIG, getActiveThemeColors } from './config/siteConfig';
-import { Property, FilterState, CurrencyMode } from './types';
+import { Property, FilterState, CurrencyMode, OperationType, PropertyType } from './types';
 import { MOCK_PROPERTIES } from './data/mockProperties';
 import { MOCK_AGENTS } from './data/mockAgents';
 
@@ -19,12 +19,12 @@ import { Footer } from './components/Footer';
 import { MessageCircle } from 'lucide-react';
 
 export function App() {
-  // Estado Bimoneda (USD / CRC) configurado por defecto en siteConfig.ts
+  // Estado Bimoneda (USD / CRC)
   const [currencyMode, setCurrencyMode] = useState<CurrencyMode>(
     SITE_CONFIG.currency.defaultMode
   );
 
-  // Inyección automática de colores corporativos desde siteConfig.ts hacia variables CSS
+  // Inyección automática de colores corporativos desde siteConfig.ts
   useEffect(() => {
     const themeColors = getActiveThemeColors();
     const root = document.documentElement;
@@ -36,7 +36,6 @@ export function App() {
     if ('badgeBg' in themeColors) {
       root.style.setProperty('--brand-badge-bg', (themeColors as any).badgeBg);
     }
-    // Actualizar el título del documento según el nombre de marca configurado
     document.title = `${SITE_CONFIG.brand.name} | Bienes Raíces Inteligentes en Costa Rica`;
   }, []);
 
@@ -62,7 +61,7 @@ export function App() {
 
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
-  // Favoritos guardados por el usuario
+  // Favoritos guardados
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('housfy_cr_favorites');
@@ -75,7 +74,7 @@ export function App() {
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
-  // Guardar favoritos en almacenamiento local
+  // Guardar favoritos
   useEffect(() => {
     try {
       localStorage.setItem('housfy_cr_favorites', JSON.stringify(favoriteIds));
@@ -99,42 +98,72 @@ export function App() {
   };
 
   const handleResetFilters = () => {
-    setFilters(initialFilters);
+    setFilters((prev) => ({
+      ...initialFilters,
+      operation: prev.operation, // Conserva si está en venta o alquiler
+    }));
+  };
+
+  // Conteo total para badges
+  const saleCountTotal = useMemo(
+    () => MOCK_PROPERTIES.filter((p) => p.operation === 'venta').length,
+    []
+  );
+
+  const rentCountTotal = useMemo(
+    () => MOCK_PROPERTIES.filter((p) => p.operation === 'alquiler').length,
+    []
+  );
+
+  // Selección directa desde el Mega-Menú o acordeón móvil
+  const handleSelectCategory = (
+    operation: OperationType,
+    propertyType: PropertyType | 'todos' = 'todos'
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      operation,
+      propertyType,
+    }));
+    const elem = document.getElementById('catalogo');
+    if (elem) {
+      elem.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   // Filtrado reactivo de propiedades
   const filteredProperties = useMemo(() => {
     return MOCK_PROPERTIES.filter((prop) => {
-      // Operación (venta o alquiler)
+      // 1. Operación (venta o alquiler)
       if (prop.operation !== filters.operation) return false;
 
-      // Tipo de inmueble
+      // 2. Tipo de inmueble
       if (filters.propertyType !== 'todos' && prop.type !== filters.propertyType) {
         return false;
       }
 
-      // Zona o Cantón
+      // 3. Zona o Cantón
       if (filters.city && !prop.city.toLowerCase().includes(filters.city.toLowerCase())) {
         return false;
       }
 
-      // Dormitorios
+      // 4. Dormitorios
       if (filters.minBedrooms > 0 && prop.bedrooms < filters.minBedrooms) {
         return false;
       }
 
-      // Precio Máximo
+      // 5. Precio Máximo
       if (prop.priceUSD > filters.maxPrice) {
         return false;
       }
 
-      // Amenidades booleanas
+      // 6. Amenidades booleanas
       if (filters.hasPool && !prop.hasPool) return false;
       if (filters.hasSecurity24 && !prop.hasSecurity24) return false;
       if (filters.hasGarage && prop.garageSpots < 1) return false;
       if (filters.hasTerrace && !prop.hasTerrace) return false;
 
-      // Exclusivas / Rebajadas
+      // 7. Exclusivas / Rebajadas
       if (filters.onlyExclusives && prop.status !== 'exclusiva') return false;
       if (filters.onlyDiscounted && prop.status !== 'rebajado') return false;
 
@@ -151,15 +180,6 @@ export function App() {
     return MOCK_AGENTS.find((a) => a.id === selectedProperty.agentId) || MOCK_AGENTS[0];
   }, [selectedProperty]);
 
-  // Scroll interactivo suave
-  const scrollToCatalog = (operation?: 'venta' | 'alquiler') => {
-    if (operation) {
-      setFilters((prev) => ({ ...prev, operation }));
-    }
-    const elem = document.getElementById('catalogo');
-    if (elem) elem.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const scrollToValuation = () => {
     const elem = document.getElementById('valoracion');
     if (elem) elem.scrollIntoView({ behavior: 'smooth' });
@@ -169,7 +189,7 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      {/* 1. Encabezado & Navegación */}
+      {/* 1. Encabezado con Mega-Menú Desktop & Acordeón Mobile-First */}
       <Navbar
         currencyMode={currencyMode}
         onToggleCurrency={() =>
@@ -177,21 +197,26 @@ export function App() {
         }
         favoritesCount={favoriteIds.length}
         onOpenFavorites={() => setIsFavoritesOpen(true)}
-        onNavigateToCatalog={scrollToCatalog}
+        onSelectCategory={handleSelectCategory}
         onNavigateToValuation={scrollToValuation}
+        saleCount={saleCountTotal}
+        rentCount={rentCountTotal}
       />
 
       {/* 2. Hero Section Editorial + Buscador Multicriterio Habitaclia */}
       <HeroSection
         filters={filters}
         onFilterChange={handleFilterChange}
-        onSearch={() => scrollToCatalog()}
+        onSearch={() => {
+          const elem = document.getElementById('catalogo');
+          if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+        }}
         matchingCount={filteredProperties.length}
         currencyMode={currencyMode}
         onNavigateToValuation={scrollToValuation}
       />
 
-      {/* 3. Catálogo de Inmuebles */}
+      {/* 3. Catálogo de Inmuebles con Pestañas Venta / Alquiler */}
       <PropertyCatalog
         properties={filteredProperties}
         currencyMode={currencyMode}
@@ -199,8 +224,14 @@ export function App() {
         onToggleFavorite={toggleFavorite}
         onSelectProperty={setSelectedProperty}
         onResetFilters={handleResetFilters}
+        activeOperation={filters.operation}
+        onChangeOperation={(op) =>
+          setFilters((prev) => ({ ...prev, operation: op, propertyType: 'todos' }))
+        }
         activeTypeFilter={filters.propertyType}
         onSelectTypeFilter={(type) => handleFilterChange({ propertyType: type })}
+        saleCountTotal={saleCountTotal}
+        rentCountTotal={rentCountTotal}
       />
 
       {/* 4. Valoración Online Inmediata (Housfy 3 Pasos) */}
