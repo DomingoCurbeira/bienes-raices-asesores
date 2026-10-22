@@ -333,10 +333,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
 
-            {/* Botón de Favoritos Guardados */}
+            {/* Botón de Favoritos Guardados (visible solo en tablet y escritorio) */}
             <button
               onClick={onOpenFavorites}
-              className="relative p-2 sm:p-2.5 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all cursor-pointer border border-slate-200"
+              className="hidden sm:inline-flex relative p-2 sm:p-2.5 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all cursor-pointer border border-slate-200"
               title="Ver propiedades guardadas"
             >
               <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${favoritesCount > 0 ? 'fill-rose-500 text-rose-500' : ''}`} />
@@ -371,6 +371,38 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* 3. Menú Móvil / Tablet tipo Acordeón Limpio (Mobile-First) */}
       {isMobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl max-h-[85vh] overflow-y-auto animate-fade-in">
+          {/* Fila de Favoritos Móvil (Ubicada cómodamente dentro del menú) */}
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              onOpenFavorites();
+            }}
+            className="w-full flex items-center justify-between p-3 rounded-2xl bg-rose-50/80 border border-rose-200/80 text-slate-900 font-semibold text-xs hover:bg-rose-100/70 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-rose-500 shadow-2xs">
+                <Heart className={`w-4 h-4 ${favoritesCount > 0 ? 'fill-rose-500' : ''}`} />
+              </div>
+              <div className="text-left">
+                <span className="block font-bold text-slate-900 text-xs">Mis Propiedades Favoritas</span>
+                <span className="block text-[10px] text-slate-500">
+                  {favoritesCount > 0
+                    ? `${favoritesCount} inmueble${favoritesCount > 1 ? 's' : ''} guardado${favoritesCount > 1 ? 's' : ''}`
+                    : 'Sin propiedades guardadas aún'}
+                </span>
+              </div>
+            </div>
+
+            {favoritesCount > 0 ? (
+              <span className="bg-rose-500 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                {favoritesCount}
+              </span>
+            ) : (
+              <span className="text-slate-400 text-[10px] flex items-center gap-1">
+                Ver lista <ChevronRight className="w-3 h-3" />
+              </span>
+            )}
+          </button>
           {/* Acordeón de Catálogo */}
           <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
             <button
