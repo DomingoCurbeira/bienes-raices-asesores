@@ -20,7 +20,10 @@
   --brand-badge-bg: #d1fae5;
 }
 
+html,
 body {
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: var(--font-sans);
   background-color: #f8fafc;
   color: #0f172a;

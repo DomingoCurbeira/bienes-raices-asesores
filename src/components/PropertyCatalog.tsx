@@ -72,9 +72,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const activeChips = activeOperation === 'venta' ? saleFilterChips : rentFilterChips;
 
   return (
-    <section id="catalogo" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="catalogo" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden w-full max-w-full">
       {/* 1. Selector de Catálogo Principal (Ventas vs Alquileres) - Gran Visibilidad */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200 w-full min-w-0">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-100/70 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
             <Building className="w-3.5 h-3.5 text-emerald-600" />
@@ -93,53 +93,55 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           </p>
         </div>
 
-        {/* Pestañas Principales Venta / Alquiler */}
-        <div className="inline-flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shrink-0 shadow-2xs">
+        {/* Pestañas Principales Venta / Alquiler (Adaptables y sin desborde en móvil) */}
+        <div className="w-full sm:w-auto grid grid-cols-2 sm:inline-flex bg-slate-100 p-1 sm:p-1.5 rounded-2xl border border-slate-200 shadow-2xs shrink-0">
           <button
             type="button"
             onClick={() => onChangeOperation('venta')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeOperation === 'venta'
                 ? 'bg-slate-900 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
-            <Home className="w-4 h-4 text-emerald-400" />
-            <span>En Venta ({saleCountTotal})</span>
+            <Home className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="truncate">En Venta ({saleCountTotal})</span>
           </button>
 
           <button
             type="button"
             onClick={() => onChangeOperation('alquiler')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeOperation === 'alquiler'
                 ? 'bg-slate-900 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
-            <KeyRound className="w-4 h-4 text-blue-400" />
-            <span>En Alquiler ({rentCountTotal})</span>
+            <KeyRound className="w-4 h-4 text-blue-400 shrink-0" />
+            <span className="truncate">En Alquiler ({rentCountTotal})</span>
           </button>
         </div>
       </div>
 
       {/* 2. Píldoras de Filtro por Tipo de Vivienda y Controles de Vista */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        {/* Píldoras Horizontales con Scroll Táctil Suave */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {activeChips.map((chip) => (
-            <button
-              key={chip.value}
-              onClick={() => onSelectTypeFilter(chip.value)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                activeTypeFilter === chip.value
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-              }`}
-            >
-              {chip.label}
-            </button>
-          ))}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 w-full min-w-0">
+        {/* Contenedor de scroll táctil aislado con min-w-0 para evitar desborde del viewport */}
+        <div className="w-full min-w-0 overflow-x-auto pb-2 scrollbar-none overscroll-x-contain">
+          <div className="flex items-center gap-2">
+            {activeChips.map((chip) => (
+              <button
+                key={chip.value}
+                onClick={() => onSelectTypeFilter(chip.value)}
+                className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  activeTypeFilter === chip.value
+                    ? 'bg-emerald-700 text-white shadow-xs'
+                    : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Ordenar y Toggle Cuadrícula / Lista */}

@@ -10,7 +10,7 @@ export const SITE_CONFIG: SiteConfig = {
   // 1. IDENTIDAD DE LA MARCA
   brand: {
     // Nombre comercial de la inmobiliaria (se refleja en encabezados, pie, títulos y WhatsApp)
-    name: 'Housfy Costa Rica',
+    name: 'Housfy CR',
 
     // Eslogan principal que aparece en el Hero
     slogan: 'La nueva era para comprar, vender y valorar tu propiedad',

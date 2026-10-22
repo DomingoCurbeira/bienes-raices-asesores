@@ -188,7 +188,7 @@ export function App() {
   const cleanWhatsApp = SITE_CONFIG.contact.whatsapp.replace(/[^0-9]/g, '');
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans overflow-x-hidden w-full max-w-full">
       {/* 1. Encabezado con Mega-Menú Desktop & Acordeón Mobile-First */}
       <Navbar
         currencyMode={currencyMode}
